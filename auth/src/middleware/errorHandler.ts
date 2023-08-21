@@ -11,16 +11,21 @@ type ValidationErrorType = {
   location: string;
 };
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.log('Something went wrong', err);
+export const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("Something went wrong", err);
 
   if (err instanceof CustomError) {
     return res.status(err.statusCode).send({
-      errors: err.serializeErrors()
+      errors: err.serializeErrors(),
     });
   }
 
   res.status(400).send({
-    errors: [{ message: 'Something went wrong' }]
+    errors: [{ message: "Something went wrong" }],
   });
 };

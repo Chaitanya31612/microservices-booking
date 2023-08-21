@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import 'express-async-errors';
 import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
@@ -10,13 +11,16 @@ import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
 
+
 const app = express();
 app.set('trust proxy', true); // trust traffic from ingress-nginx proxy
 app.use(express.json());
 app.use(cookieSession({
   signed: false, // disable encryption
-  secure: true // only use cookies over https connection
+  // secure: true // only use cookies over https connection
 }));
+
+app.use(morgan('tiny'))
 
 app.use(currentUserRouter);
 app.use(signinRouter);
@@ -38,7 +42,7 @@ const start = async () => {
 
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB!');
   } catch (err) {
     console.error(err);
   }
