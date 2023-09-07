@@ -1,38 +1,6 @@
-import express from 'express';
-import morgan from 'morgan';
-import 'express-async-errors';
 import mongoose from 'mongoose';
-import cookieSession from 'cookie-session';
 
-import { NotFoundError } from './errors/notFound';
-import { errorHandler } from './middleware/errorHandler';
-import { currentUserRouter } from './routes/currentUser';
-import { signinRouter } from './routes/signin';
-import { signoutRouter } from './routes/signout';
-import { signupRouter } from './routes/signup';
-
-
-const app = express();
-app.set('trust proxy', true); // trust traffic from ingress-nginx proxy
-app.use(express.json());
-app.use(cookieSession({
-  signed: false, // disable encryption
-  // secure: true // only use cookies over https connection
-}));
-
-app.use(morgan('tiny'))
-
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
-app.use(signupRouter);
-
-app.all("*", () => {
-  throw new NotFoundError();
-});
-
-// catch errors from our app router
-app.use(errorHandler);
+import { app } from './app'
 
 const start = async () => {
   console.log('Starting up auth service...');
