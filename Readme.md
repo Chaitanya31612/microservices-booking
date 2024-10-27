@@ -10,3 +10,7 @@ OR
 6. run `minikube stop` to stop the cluster
 7. run `minikube delete` to delete the cluster
 8. run `minikube addons list` to see the addons installed
+
+## Creating secret in kube cluster
+
+1. Create a secret in the cluster using the command `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=your_secret_key`
