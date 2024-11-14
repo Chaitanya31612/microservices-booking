@@ -1,11 +1,8 @@
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
-import { BadRequestError } from "../errors/badRequestError";
-import { DatabaseConnectionError } from "../errors/databaseConnectionError";
-import { RequestValidationError } from "../errors/requestValidationError";
+import { BadRequestError, validateRequest } from "@cgticketingproject/common";
 import { User } from "../models/user";
-import { validateRequest } from "../middleware/validateRequest";
 
 const router = express.Router();
 

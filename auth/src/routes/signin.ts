@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
-import { RequestValidationError } from "../errors/requestValidationError";
-import { validateRequest } from "../middleware/validateRequest";
+
+import { validateRequest, BadRequestError } from "@cgticketingproject/common";
+
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/badRequestError";
 import { Password } from "../services/password";
 import jwt from "jsonwebtoken";
 

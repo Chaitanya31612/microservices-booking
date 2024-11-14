@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function Signout() {
-  const { currentUser, loading, userSignedOut } = useUser();
+  // const { currentUser, loading, userSignedOut } = useUser();
   const router = useRouter();
 
   const { doRequest, errors } = useRequest({
@@ -16,7 +16,7 @@ export default function Signout() {
 
   useEffect(() => {
     doRequest();
-    userSignedOut();
+    // userSignedOut();
   }, []);
 
   return <div>Signing you out...</div>;
