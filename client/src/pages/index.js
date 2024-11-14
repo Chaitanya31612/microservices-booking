@@ -1,6 +1,9 @@
+import { useUser } from "@/contexts/UserContext";
 import axios from "axios";
 
 export default function Landing({ currentUser }) {
+  // const { currentUser, loading } = useUser();
+
   return currentUser ? (
     <div>You are signed in</div>
   ) : (
@@ -8,6 +11,7 @@ export default function Landing({ currentUser }) {
   );
 }
 
+// ** Important ** - uncomment once to read the code, then comment again
 // this runs on the server on each request
 export async function getServerSideProps({ req }) {
   // using kubernetes, if we make a request, it will be under the client pod and will not be routed by
