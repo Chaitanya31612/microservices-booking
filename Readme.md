@@ -14,3 +14,12 @@ OR
 ## Creating secret in kube cluster
 
 1. Create a secret in the cluster using the command `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=your_secret_key`
+
+## Solution to the Auth Status on the client side
+
+1. using `getServerSideProps` to get the currentUser on the initial page load don't work if we hit `/api/users/currentuser` because `getServerSideProps` runs on the server and the request to `/api/users/currentuser` is made on the client pod which throws error of not found.
+2. To solve this we need to make a forward that request to the ingress-nginx controller which will then forward the request with the cookie from the browser to the correct service (auth service) and then return the response to the client.
+3. So we need to make a proxy request to the ingress-nginx controller which will then forward the request to the correct service.
+4. The request need to made on `"http://SERVICENAME.NAMESPACE.svc.cluster.local/api/users/currentuser"` which in our case is,
+    `"http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser"`. and pass the headers as well.
+    To get the namespace run `kubectl get namespace` and to get the service name run `kubectl get services -n NAMESPACE`
