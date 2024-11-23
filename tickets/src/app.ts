@@ -4,7 +4,15 @@ import morgan from "morgan";
 import "express-async-errors";
 import cookieSession from "cookie-session";
 
-import { NotFoundError, errorHandler } from "@cgticketingproject/common";
+import {
+  NotFoundError,
+  currentUser,
+  errorHandler,
+} from "@cgticketingproject/common";
+import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
+import { indexTicketRouter } from "./routes";
+import { updateTicketRouter } from "./routes/update";
 
 const app = express();
 app.set("trust proxy", true); // trust traffic from ingress-nginx proxy
@@ -17,6 +25,12 @@ app.use(
 );
 
 app.use(morgan("tiny"));
+app.use(currentUser); // for authentication and setting of req.currentUser
+
+app.use(indexTicketRouter);
+app.use(createTicketRouter);
+app.use(showTicketRouter);
+app.use(updateTicketRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
