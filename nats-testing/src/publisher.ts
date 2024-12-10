@@ -1,4 +1,5 @@
 import { connect, StringCodec } from "nats";
+import { TicketCreatedPublisher } from "./events/ticket-created-publisher";
 
 (async () => {
   console.clear();
@@ -9,14 +10,25 @@ import { connect, StringCodec } from "nats";
   // create a codec
   const sc = StringCodec();
 
-  nc.publish("hello", sc.encode("world"));
-  nc.publish("hello", sc.encode("again"));
-  nc.publish("hello", sc.encode("again 2"));
-  const data = {
-    id: "23",
-    name: "Chaitanya",
-  };
-  nc.publish("hello", sc.encode(JSON.stringify(data)));
+  const publisher = new TicketCreatedPublisher(nc);
+  try {
+    await publisher.publish({
+      id: "123",
+      title: "concert",
+      price: 20,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+
+  // nc.publish("ticket:created", sc.encode("world"));
+  // nc.publish("ticket:created", sc.encode("again"));
+  // nc.publish("ticket:created", sc.encode("again 2"));
+  // const data = {
+  //   id: "23",
+  //   name: "Chaitanya",
+  // };
+  // nc.publish("ticket:created", sc.encode(JSON.stringify(data)));
 
   // we want to ensure that messages that are in flight
   // get processed, so we are going to drain the
