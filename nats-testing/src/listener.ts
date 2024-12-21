@@ -1,4 +1,5 @@
 import { connect, StringCodec, NatsConnection, Msg } from "nats";
+import { natsWrapper } from "../../tickets/src/nats-wrapper";
 import { TicketCreatedListener } from "./events/ticket-created-listener";
 
 // (async () => {
@@ -56,8 +57,10 @@ import { TicketCreatedListener } from "./events/ticket-created-listener";
 (async () => {
   console.clear();
   const nc = await connect();
+  // await natsWrapper.connect("http://nats-srv:4222");
+  // const nc = natsWrapper.client;
 
-  console.log("Listener connected to nats");
+  console.log("Listener connected to nats", nc.getServer());
 
   new TicketCreatedListener(nc).listen();
 })();
